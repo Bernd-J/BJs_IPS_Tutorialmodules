@@ -33,7 +33,7 @@ Aus diesem Grunde bietet er im Pull-down als übergeordnete Instanz die bereits v
 
 Möchten wir allerdings eine neue serielle Schnittstelle nutzen, so müssen wir sie selbst anlegen und verknüpfen.
 
-Als Beispiel für eingehenden Traffic schnappen wir uns mal ein beliebiges ESP8266 Modul, benutzen anhand DIESER Anleitung die entsprechende Hardware und öffnen die Arduino IDE:
+Als Beispiel für eingehenden Traffic schnappen wir uns mal ein beliebiges ESP8266 Modul, benutzen anhand [DIESER] (https://www.symcon.de/forum/threads/27549-WiFi-Modul-ESP8266?p=255879#post255879) Anleitung und [jener](https://homec4u.wordpress.com/2015/06/24/1-wire-per-arduino-ide-direkt-auf-dem-esp8266/)die entsprechende Hardware und öffnen die Arduino IDE:
 
    ![](../Doku/Doku_1W_Arduinosample.png)
 
@@ -45,6 +45,16 @@ sieht man schön die sprudelnden Datenpakete:
 
    ![](../Doku/Doku_1W_Datastream.png)
 
-In IPS findet sich im Log dann folgendes:
+Zu diesem Zeitpunkt befanden sich 2 Stück am Bus.
 
-   
+In IPS findet sich im Log des ComPortes dann folgendes:
+
+   ![](../Doku/Doku_1W_Datastream_IPSComport.png)
+
+Wie wir sehen hängen die Daten nicht zusammen, sondern trudeln alle per Zufallslänge rein.
+
+Da wir in Zeile 29 der module.php sämtlichen eingehenden Traffic ins log senden schaut das Meldungsfenster dementsprechend aus:
+
+   ![](../Doku/Doku_1W_IPS_Meldungsfenster.png)
+
+Hier ist das Ende des ersten Modules, im nächsten geht es weiter mit dem Auswerten.
