@@ -19,6 +19,10 @@ Also wählt ihn mit Bedacht und Aussagefähig genug,
 
 denn nichts ist schlimmer als wenn 20-mal dort IPS erscheint.
 
+Ich hab meine mal überarbeitet, sieht jetzt so aus:
+
+   ![](Doku/Doku_Modules.png)
+
 # kurze Anleitung zum Erstellen eigener Module
 
 Zum Editieren der Dateien benutze ich persönlich den folgenden Editor:

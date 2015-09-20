@@ -19,5 +19,17 @@ Dadurch, dass in der module.json 2 intern genutzte ID´s angesprochen werden, wel
 
 Seht selbst:
 
+   ![](Doku/Doku_String_Receiver_modulejson.png)
+
+Installieren des Modules (in der module.json steht als "vendor" Tutorials !)
+
+   ![](Doku/Doku_Instanz_hinzu.png)
+
 wobei anzumerken ist dass dieses Modul selbst kein eigenes Interface erstellt, dazu kommen wir später.
+
+Aus diesem Grunde bietet er im Pull-down als übergeordnete Instanz die bereits vorhandenen Schnittstellen an, welche kompatibel sind:
+
+   ![](Doku/Doku_String_Receiver.png)
+
+Möchten wir allerdings eine neue serielle Schnittstelle nutzen, so müssen wir sie selbst anlegen und verknüpfen.
 
