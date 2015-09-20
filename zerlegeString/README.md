@@ -13,9 +13,13 @@ alle 4 Dateien des alten Modules in das neue kopieren:
 form.json: kann so bleiben
 
 module.json:
+
 Zeile 2, neue id per [guidgenerator.com](https://www.guidgenerator.com/) erzeugen und hier tauschen.
+
 Zeile 6, aussagekräftigen Namen einsetzen
+
 Zeile 10 ersetzen, dient später in IP-Symcon als Prefix für die Befehle
+
 Zeile 3 ist die wichtigste, der hier eingestellte Name definiert die neu zu schaffende Klasse welche später in IPS benutzt wird.
 
 Man findet sie wieder in
@@ -23,6 +27,7 @@ Man findet sie wieder in
 module.php
 
 in Zeile 3, dort muss sie entsprechend angepasst werden.
+
 Unsere Ergänzungen halten Einzug ab Zeile 29.
 
 Was ist zu tun?
