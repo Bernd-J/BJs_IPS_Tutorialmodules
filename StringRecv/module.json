@@ -1,0 +1,11 @@
+{
+    "id": "{59BCA6AC-A232-4023-8743-8370EAC79210}",
+    "name": "StringRecv",
+    "type": 3,
+    "vendor": "Tutorials",
+    "aliases": ["String Receiver"],
+    "parentRequirements": ["{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}"],
+    "childRequirements": [],
+    "implemented": ["{018EF6B5-AB94-40C6-AA53-46943E824ACF}"],
+    "prefix": "StrRecv"
+}
