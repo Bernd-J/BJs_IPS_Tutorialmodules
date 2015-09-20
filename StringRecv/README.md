@@ -33,7 +33,7 @@ Aus diesem Grunde bietet er im Pull-down als übergeordnete Instanz die bereits v
 
 Möchten wir allerdings eine neue serielle Schnittstelle nutzen, so müssen wir sie selbst anlegen und verknüpfen.
 
-Als Beispiel für eingehenden Traffic schnappen wir uns mal ein beliebiges ESP8266 Modul, benutzen anhand [DIESER] (https://www.symcon.de/forum/threads/27549-WiFi-Modul-ESP8266?p=255879#post255879) Anleitung und [jener](https://homec4u.wordpress.com/2015/06/24/1-wire-per-arduino-ide-direkt-auf-dem-esp8266/)die entsprechende Hardware und öffnen die Arduino IDE:
+Als Beispiel für eingehenden Traffic schnappen wir uns mal ein beliebiges ESP8266 Modul, benutzen anhand [dieser] (https://www.symcon.de/forum/threads/27549-WiFi-Modul-ESP8266?p=255879#post255879) Anleitung und [jener](https://homec4u.wordpress.com/2015/06/24/1-wire-per-arduino-ide-direkt-auf-dem-esp8266/) die entsprechende Hardware und öffnen die Arduino IDE:
 
    ![](../Doku/Doku_1W_Arduinosample.png)
 
