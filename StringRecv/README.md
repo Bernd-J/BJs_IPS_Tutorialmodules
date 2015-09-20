@@ -33,3 +33,18 @@ Aus diesem Grunde bietet er im Pull-down als übergeordnete Instanz die bereits v
 
 Möchten wir allerdings eine neue serielle Schnittstelle nutzen, so müssen wir sie selbst anlegen und verknüpfen.
 
+Als Beispiel für eingehenden Traffic schnappen wir uns mal ein beliebiges ESP8266 Modul, benutzen anhand DIESER Anleitung die entsprechende Hardware und öffnen die Arduino IDE:
+
+   ![](../Doku/Doku_1W_Arduinosample.png)
+
+Anhand des Quelltextes erkennen wir dass hier an GPIO2 angeschlossene DS18B20 ausgelesen werden und die Daten auf der seriellen Schnittstelle ausgegeben werden.
+
+Öffnet man: Werkzeuge --> Serieller Monitor
+
+sieht man schön die sprudelnden Datenpakete:
+
+   ![](../Doku/Doku_1W_Datastream.png)
+
+In IPS findet sich im Log dann folgendes:
+
+   
