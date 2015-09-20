@@ -4,6 +4,7 @@ hier folgen nach und nach Beispielmodule,
 am besten in der folgenden Reihenfolge durch arbeiten:
 
 * String Receiver by NallChan
+* zerlegeString
 
 # Kurzhinweise zu GitHub und IPS
 

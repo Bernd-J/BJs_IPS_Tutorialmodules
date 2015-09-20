@@ -44,4 +44,4 @@ Was ist zu tun?
 * folgt jetzt eine weitere HardwareID das obige Schema wiederholen.
 
 Alle Daten in ein Array und daraus dann Variablen füttern mit zusammenfassendem Dummymodul für jeden Temperatursensor.
-Jedem Sensor ein zusätzliches Namensfeld verpassen welches ausgefüllt werden muss.
+Jedem Sensor ein zusätzliches Namensfeld, evtl. zusätzlich Standortsfeld verpassen, welches ausgefüllt werden muss.
