@@ -28,6 +28,10 @@ class zerlegeString extends IPSModule
         $data = json_decode($JSONString);
         IPS_LogMessage('Empfang',print_r($data,1));
         // Rohdaten müssen noch mit utf8_decode dekodiert werden.
+        $data = utf8_decode($data);
+        $stringall = $stringall.$data;
+
+
     }
 
     protected function SendDataToParent($Data)
