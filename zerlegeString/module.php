@@ -30,7 +30,7 @@ class zerlegeString extends IPSModule
 //        IPS_LogMessage(__CLASS__, __FUNCTION__); //
 //FIXME Bei Status inaktiv abbrechen
         $data = json_decode($JSONString);
-        $BufferID = $this->GetIDForIdent("BufferIN");
+        $BufferID = $this->GetIDForIdent("Buffer");
 // Empfangs Lock setzen
         if (!$this->lock("ReplyLock"))
         {
