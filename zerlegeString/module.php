@@ -13,6 +13,8 @@ class zerlegeString extends IPSModule
     {
         //Never delete this line!
         parent::ApplyChanges();
+        $this->RegisterVariableString("BufferIN", "BufferIN", "", -4);
+        IPS_SetHidden($this->GetIDForIdent('BufferIN'), false);
     }
 ################## PUBLIC
 
@@ -30,7 +32,7 @@ class zerlegeString extends IPSModule
 //        IPS_LogMessage(__CLASS__, __FUNCTION__); //
 //FIXME Bei Status inaktiv abbrechen
         $data = json_decode($JSONString);
-        $BufferID = $this->GetIDForIdent("Buffer");
+        $BufferID = $this->GetIDForIdent("BufferIN");
 // Empfangs Lock setzen
         if (!$this->lock("ReplyLock"))
         {
@@ -65,7 +67,5 @@ class zerlegeString extends IPSModule
     }
 
 }
-
-
 
 ?>
