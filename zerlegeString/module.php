@@ -65,6 +65,31 @@ class zerlegeString extends IPSModule
         $JSONString = json_encode($DataArray);
         IPS_SendDataToParent($this->InstanceID, $JSONString);
     }
+################## SEMAPHOREN Helper  - private
+
+    private function lock($ident)
+    {
+        for ($i = 0; $i < 100; $i++)
+        {
+            if (IPS_SemaphoreEnter("LMS_" . (string) $this->InstanceID . (string) $ident, 1))
+            {
+//                IPS_LogMessage((string)$this->InstanceID,"Lock:LMS_" . (string) $this->InstanceID . (string) $ident);
+                return true;
+            }
+            else
+            {
+                IPS_Sleep(mt_rand(1, 5));
+            }
+        }
+        return false;
+    }
+
+    private function unlock($ident)
+    {
+//                IPS_LogMessage((string)$this->InstanceID,"Unlock:LMS_" . (string) $this->InstanceID . (string) $ident);
+
+        IPS_SemaphoreLeave("LMS_" . (string) $this->InstanceID . (string) $ident);
+    }
 
 }
 
