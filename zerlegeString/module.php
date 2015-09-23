@@ -14,7 +14,11 @@ class zerlegeString extends IPSModule
         //Never delete this line!
         parent::ApplyChanges();
         $this->RegisterVariableString("BufferIN", "BufferIN", "", -4);
+        $this->RegisterVariableBoolean("ReplyEvent", "ReplyEvent", "", -5);
+        $this->RegisterVariableBoolean("Connected", "Connected", "", -3);
         IPS_SetHidden($this->GetIDForIdent('BufferIN'), false);
+        IPS_SetHidden($this->GetIDForIdent('ReplyEvent'), false);
+        IPS_SetHidden($this->GetIDForIdent('Connected'), false);
     }
 ################## PUBLIC
 
@@ -54,6 +58,43 @@ class zerlegeString extends IPSModule
 // Empfangs Lock aufheben
         $this->unlock("ReplyLock");
         return true;
+    }
+
+    private function GetErrorState()
+    {
+        return !GetValueBoolean($this->GetIDForIdent('Connected'));
+    }
+
+    private function SetErrorState($Value)
+    {
+        SetValueBoolean($this->GetIDForIdent('Connected'), !$Value);
+    }
+
+    private function SetReplyEvent($Value)
+    {
+        $EventID = $this->GetIDForIdent('ReplyEvent');
+        if ($this->lock('ReplyEvent'))
+        {
+            SetValueBoolean($EventID, $Value);
+            $this->unlock('ReplyEvent');
+            return true;
+        }
+        return false;
+    }
+
+    private function WaitForResponse($Timeout)
+    {
+        $Event = $this->GetIDForIdent('ReplyEvent');
+        for ($i = 0; $i < $Timeout / 5; $i++)
+        {
+            if (!GetValueBoolean($Event))
+                IPS_Sleep(5);
+            else
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected function SendDataToParent($Data)
