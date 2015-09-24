@@ -13,11 +13,40 @@ class zerlegeString extends IPSModule
     {
         //Never delete this line!
         parent::ApplyChanges();
-        $this->RegisterVariableString("BufferIN", "BufferIN", "", -4);
-        $this->RegisterVariableString("Dataset", "Dataset", "", -3);
-        $this->RegisterVariableInteger("Sensoren", "Sensoren", "", -1);
+        $this->RegisterVariableString("BufferIN", "BufferIN", "", -7);
+        $this->RegisterVariableString("Dataset", "Dataset", "", -6);
+        $this->RegisterVariableInteger("Sensoren", "Sensoren", "", -5);
         IPS_SetHidden($this->GetIDForIdent('BufferIN'), true);
         IPS_SetHidden($this->GetIDForIdent('Dataset'), true);
+
+        $Dummymodul_1_ID = IPS_CreateInstance("{485D0419-BE97-4548-AA9C-C083EB82E61E}");
+        IPS_SetName($Dummymodul_1_ID, "Sensor_1"); // Instanz benennen
+        IPS_SetParent($Dummymodul_1_ID, $this->InstanceID); // Instanz einsortieren unter dem Objekt klappt, aber:
+
+        //      ** sobald ich die InstanceID verlasse findet er nix mehr, gibt´s ne Abhilfe?
+
+        //      **************************** hier fehl am Platze ??
+
+/*       was wollte ich erreichen?
+         nachdem der erste Datensatz empfangen wurde ist die Anzahl an angeschlossenen Temperatursensoren bekannt,
+         siehe Zeile 81.
+         Nun sollte für jeden Temperatursensor ein Dummymodul erstellt werden und dort hinein sollten die Werte.
+         Zusätzlich 2 Eingabefelder: Name und Standort
+         könnte man die nachträglich in den "elements" Bereich des Konfigurationsformulares hinein bringen?
+         BTW: die Variablen des applychanges Bereiches hier oben sind unten nicht mehr nutzbar;
+         und über &this-> werden sie nur gefunden bei gleichem Parent, also nicht wenn sie unterhalb liegen.
+         Noch ne Idee: Im "actions" Bereich des Konfigurationsformulares einen Button um die Verbindung zu testen und einmalig die Anzahl an Sensoren auszulesen.
+         Weiteres Problem: mit jedem Neustart wird ein neues Dummymodul angelegt, gibt es sowas wie RegisterInstance ??
+*/
+        $this->RegisterVariableString("Sensor1_ROM", "Sensor1_ROM", "", -4);
+        $Sensor1_ROMID = $this->GetIDForIdent("Sensor1_ROM");
+        $this->RegisterVariableString("Sensor1_Temp", "Sensor1_Temp", "", -3); // ja, ich weiss, hier gehört später eine FloatVariable rein
+        $Sensor1_TempID = $this->GetIDForIdent("Sensor1_Temp");
+        $this->RegisterVariableString("Sensor2_Temp", "Sensor2_Temp", "", -3);
+        $Sensor2_TempID = $this->GetIDForIdent("Sensor2_Temp");
+        $this->RegisterVariableString("Sensor3_Temp", "Sensor3_Temp", "", -3);
+        $Sensor3_TempID = $this->GetIDForIdent("Sensor3_Temp");
+//        IPS_SetParent($Sensor1_ROMID, $Dummymodul_1_ID); // Instanz einsortieren unter dem Objekt
 
     }
 ################## PUBLIC
@@ -52,17 +81,25 @@ class zerlegeString extends IPSModule
            $AnzahlSensoren = substr_count($Datasets[0], 'ROM');          // hier zählen wir wieviele Sensoren vorhanden sind
 //           IPS_LogMessage('Anzahl Sensoren:',$AnzahlSensoren);
            SetValueInteger($SensorenID, $AnzahlSensoren);                // und füllen damit die Variable
+
            $Sensoren = $Datasets[0];
            $Startsequenz1 = "ROM = ";                                    // damit fängt der Datensatz an
            $Endesequenz1 = chr(0x0D).chr(0x0A);                          // damit hört der Datensatz auf
            $Sensordaten[0] = explode ($Startsequenz1, $Sensoren);
+           IPS_LogMessage('Sensor1 ROM ID unten: ',$this->GetIDForIdent("Sensor1_ROM"));
+//           SetValueString($Sensor1_ROMID, $Sensordaten[0][1]);         // und füllen damit die Variable, hier ist alles Mist, wir brauchen ne Funktion zum Erstellen der Dummymodule
+           SetValueString($this->GetIDForIdent("Sensor1_ROM"), $Sensordaten[0][1]);  // und füllen damit die Variable, und dann Befüllen aus dem Array
+//         *********** hier wird gearbeitet, bzw. verzweifelt ***************************
            $Startsequenz2 = "Chip = ";                                   // damit fängt der Datensatz an
            $Endesequenz2 = chr(0x0D).chr(0x0A);                          // damit hört der Datensatz auf
            $Sensordaten[1] = explode ($Startsequenz2, $Sensoren);
            $Startsequenz3 = "Temperature = ";                            // damit fängt der Datensatz an
            $Endesequenz3 = chr(0x0D).chr(0x0A);                          // damit hört der Datensatz auf
            $Sensordaten[2] = explode ($Startsequenz3, $Sensoren);
-                                                                         // Restinformationen abschneiden
+           SetValueString($this->GetIDForIdent("Sensor1_Temp"), $Sensordaten[2][1]);  // und füllen damit die Variable, und dann Befüllen aus dem Array
+           SetValueString($this->GetIDForIdent("Sensor2_Temp"), $Sensordaten[2][2]);  // und füllen damit die Variable, und dann Befüllen aus dem Array
+           SetValueString($this->GetIDForIdent("Sensor3_Temp"), $Sensordaten[2][3]);  // und füllen damit die Variable, und dann Befüllen aus dem Array
+                                                                         // Restinformationen abschneiden folgt demnächst
            IPS_LogMessage('Sensordaten: ',print_r($Sensordaten,1));
            }
            else
