@@ -14,11 +14,11 @@ class zerlegeString extends IPSModule
         //Never delete this line!
         parent::ApplyChanges();
         $this->RegisterVariableString("BufferIN", "BufferIN", "", -4);
-        $this->RegisterVariableBoolean("ReplyEvent", "ReplyEvent", "", -5);
-        $this->RegisterVariableBoolean("Connected", "Connected", "", -3);
-        IPS_SetHidden($this->GetIDForIdent('BufferIN'), false);
-        IPS_SetHidden($this->GetIDForIdent('ReplyEvent'), false);
-        IPS_SetHidden($this->GetIDForIdent('Connected'), false);
+        $this->RegisterVariableString("Dataset", "Dataset", "", -3);
+        $this->RegisterVariableInteger("Sensoren", "Sensoren", "", -1);
+        IPS_SetHidden($this->GetIDForIdent('BufferIN'), true);
+        IPS_SetHidden($this->GetIDForIdent('Dataset'), true);
+
     }
 ################## PUBLIC
 
@@ -30,71 +30,46 @@ class zerlegeString extends IPSModule
 ################## DATAPOINTS
 
     public function ReceiveData($JSONString)
-    {
-// alles geklaut aus MS35 Zeile 592 - 620
-//        IPS_LogMessage('RecData', utf8_decode($JSONString));
-//        IPS_LogMessage(__CLASS__, __FUNCTION__); //
-//FIXME Bei Status inaktiv abbrechen
-        $data = json_decode($JSONString);
-        $BufferID = $this->GetIDForIdent("BufferIN");
-// Empfangs Lock setzen
-        if (!$this->lock("ReplyLock"))
-        {
-            throw new Exception("ReceiveBuffer is locked");
-        }
-        /*
-          // Datenstream zusammenfügen
-          $Head = GetValueString($BufferID); */
-// Stream zusammenfügen
-        SetValueString($BufferID, utf8_decode($data->Buffer));
-// Empfangs Event setzen
-        /*        if (!$this->SetReplyEvent(TRUE))
-          {
-          // Empfangs Lock aufheben
-          $this->unlock("ReplyLock");
-          throw new Exception("Can not send to ParentLMS");
-          } */
-        $this->SetReplyEvent(TRUE);
-// Empfangs Lock aufheben
-        $this->unlock("ReplyLock");
-        return true;
-    }
-
-    private function GetErrorState()
-    {
-        return !GetValueBoolean($this->GetIDForIdent('Connected'));
-    }
-
-    private function SetErrorState($Value)
-    {
-        SetValueBoolean($this->GetIDForIdent('Connected'), !$Value);
-    }
-
-    private function SetReplyEvent($Value)
-    {
-        $EventID = $this->GetIDForIdent('ReplyEvent');
-        if ($this->lock('ReplyEvent'))
-        {
-            SetValueBoolean($EventID, $Value);
-            $this->unlock('ReplyEvent');
-            return true;
-        }
-        return false;
-    }
-
-    private function WaitForResponse($Timeout)
-    {
-        $Event = $this->GetIDForIdent('ReplyEvent');
-        for ($i = 0; $i < $Timeout / 5; $i++)
-        {
-            if (!GetValueBoolean($Event))
-                IPS_Sleep(5);
-            else
-            {
-                return true;
-            }
-        }
-        return false;
+    {                                                                    // *************** Daten zusammen tragen ************
+           $data = json_decode($JSONString);
+           $BufferID = $this->GetIDForIdent("BufferIN");
+           $DatasetID = $this->GetIDForIdent("Dataset");
+           $SensorenID = $this->GetIDForIdent("Sensoren");
+           $Head = GetValueString($BufferID);                            // holt sich die gespeicherten Restdaten aus der Variablen
+           $dazu = utf8_decode($data->Buffer);                           // holen des neuen
+           $all = $Head.$dazu;                                           // setzt alle zusammen
+                                                                         // *************** Datensatz separieren *************
+           $Startsequenz = chr(0x0D).chr(0x0A).chr(0x0D).chr(0x0A);      // damit fängt der Datensatz an
+           $Datasets = explode ($Startsequenz, $all);                    // Nun zerlegen wir den Senf und basteln ein Array
+//           IPS_LogMessage('Datasets: ',print_r($Datasets,1));
+           $AnzahlDatasets = count ($Datasets);
+           if ($AnzahlDatasets > 1)                                      // checkt ob ein vollständiger da ist
+           {
+//           IPS_LogMessage('If Datasets Weg oben',$AnzahlDatasets);
+           SetValueString($BufferID, $Datasets[1]);                      // schreibt die Reste wieder zurück
+           SetValueString($DatasetID, $Datasets[0]);                     // schreibt vollständigen Datensatz in Dataset, kann später wieder raus
+           // ab hier zerlegen wir das Dataset 0                         // *************** Datensatz verarbeiten ************
+           $AnzahlSensoren = substr_count($Datasets[0], 'ROM');          // hier zählen wir wieviele Sensoren vorhanden sind
+//           IPS_LogMessage('Anzahl Sensoren:',$AnzahlSensoren);
+           SetValueInteger($SensorenID, $AnzahlSensoren);                // und füllen damit die Variable
+           $Sensoren = $Datasets[0];
+           $Startsequenz1 = "ROM = ";                                    // damit fängt der Datensatz an
+           $Endesequenz1 = chr(0x0D).chr(0x0A);                          // damit hört der Datensatz auf
+           $Sensordaten[0] = explode ($Startsequenz1, $Sensoren);
+           $Startsequenz2 = "Chip = ";                                   // damit fängt der Datensatz an
+           $Endesequenz2 = chr(0x0D).chr(0x0A);                          // damit hört der Datensatz auf
+           $Sensordaten[1] = explode ($Startsequenz2, $Sensoren);
+           $Startsequenz3 = "Temperature = ";                            // damit fängt der Datensatz an
+           $Endesequenz3 = chr(0x0D).chr(0x0A);                          // damit hört der Datensatz auf
+           $Sensordaten[2] = explode ($Startsequenz3, $Sensoren);
+                                                                         // Restinformationen abschneiden
+           IPS_LogMessage('Sensordaten: ',print_r($Sensordaten,1));
+           }
+           else
+           {
+//           IPS_LogMessage('If ELSE Weg Datasets',$AnzahlDatasets);
+           SetValueString($BufferID, $all);                              // schreibt alles wieder zurück, weil es noch nicht vollständig war
+           }
     }
 
     protected function SendDataToParent($Data)
@@ -105,31 +80,6 @@ class zerlegeString extends IPSModule
             );
         $JSONString = json_encode($DataArray);
         IPS_SendDataToParent($this->InstanceID, $JSONString);
-    }
-################## SEMAPHOREN Helper  - private
-
-    private function lock($ident)
-    {
-        for ($i = 0; $i < 100; $i++)
-        {
-            if (IPS_SemaphoreEnter("LMS_" . (string) $this->InstanceID . (string) $ident, 1))
-            {
-//                IPS_LogMessage((string)$this->InstanceID,"Lock:LMS_" . (string) $this->InstanceID . (string) $ident);
-                return true;
-            }
-            else
-            {
-                IPS_Sleep(mt_rand(1, 5));
-            }
-        }
-        return false;
-    }
-
-    private function unlock($ident)
-    {
-//                IPS_LogMessage((string)$this->InstanceID,"Unlock:LMS_" . (string) $this->InstanceID . (string) $ident);
-
-        IPS_SemaphoreLeave("LMS_" . (string) $this->InstanceID . (string) $ident);
     }
 
 }
