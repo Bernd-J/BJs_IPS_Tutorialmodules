@@ -45,3 +45,11 @@ Was ist zu tun?
 
 Alle Daten in ein Array und daraus dann Variablen füttern mit zusammenfassendem Dummymodul für jeden Temperatursensor.
 Jedem Sensor ein zusätzliches Namensfeld, evtl. zusätzlich Standortsfeld verpassen, welches ausgefüllt werden muss.
+
+Das mit dem Dummymodul hab ich aufgegeben, er findet die Dinger in den Childs nicht.
+
+Ebenso sind for Schleifen nicht machbar, da wir uns hier in der Welt der objekt orieentierten Programmierung befinden sollte man vermutlich auf Funktionen zurück greifen.
+
+Um das ganze schnell zum Abschluss zu bringen hab ich eine Copy&Paste Orgie betrieben und alles manuell angepasst,
+
+es läuft bisher absturzfrei.
