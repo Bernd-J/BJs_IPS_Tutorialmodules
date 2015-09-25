@@ -2,6 +2,19 @@
 
 * zerlegeString
 
+# was kann es?
+
+anhand eines ESP-8266 Modules an welchem 3 Stück 1-Wire Temperatursensoren angeschlossen sind,
+diese Daten einzelnen Variablen zuordnen.
+
+Näheres zur Hardware im README des Modules StringRecv.
+
+und so sieht es dann aus:
+
+   ![](Doku/Doku_Module_zerlegeString.png)
+
+# wie gehen wir vor?
+
 basierend auf dem Modul StringRecv basteln wir uns ein neues:
 
 Vorgehensweise:
