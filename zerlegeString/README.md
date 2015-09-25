@@ -53,3 +53,5 @@ Ebenso sind for Schleifen nicht machbar, da wir uns hier in der Welt der objekt 
 Um das ganze schnell zum Abschluss zu bringen hab ich eine Copy&Paste Orgie betrieben und alles manuell angepasst,
 
 es läuft bisher absturzfrei.
+
+Das bisherige Beispiel ist auf 3 Sensoren ausgelegt, bei Bedarf einfach erweitern.
