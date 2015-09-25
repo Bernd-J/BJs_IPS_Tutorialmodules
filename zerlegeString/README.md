@@ -11,7 +11,7 @@ Näheres zur Hardware im README des Modules StringRecv.
 
 und so sieht es dann aus:
 
-   ![](Doku/Doku_Module_zerlegeString.png)
+   ![](Doku/Doku_Modul_zerlegeString.png)
 
 # wie gehen wir vor?
 
